@@ -49,7 +49,18 @@ public class Wires {
         switch (state) {
             case 0 ->
                 Static.window.query("Is there more than one red wire?", new Option[]{
-                        new Option("Yes", l -> Static.window.query("Is the last digit of the serial number odd?", new Option[]{new Option("Yes", l -> Static.window.query("Cut the last red wire.", new Option[]{new Option("Return", i -> Static.window.returnToModules())}))})});
+                    new Option("Yes", l -> Static.window.query("Is the last digit of the serial number odd?", new Option[]{
+                         new Option("Yes", l -> Static.window.query("Cut the last red wire.", new Option[]{
+                             new Option("Return", i -> Static.window.returnToModules())
+                         }))
+                     }),
+                         new Option("No", l -> four(1)),
+                     new Option("Yes", l -> four(1))
+                 });
+            case 1 ->
+                Static.window.query("Is the last wire yellow?", new Option[]{
+                     new Option("Yes", l-> Static.window.query("Are there any red wires?", nee Option[]{
+                         new Option("Yes", i
         }
     }
 

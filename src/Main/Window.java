@@ -19,17 +19,18 @@ public class Window extends JFrame {
     public void returnToModules() {
         reset();
         // Modules
-        newButton("Basic Wires", j -> new Standard.Wires());
+        button("Basic Wires", j -> new Standard.Wires(),Static.constraints(0,0,0,0));
 
         revalidate();
     }
     public void query(String question, Option[] options) {
         reset();
-        add(new JLabel(question));
-        for (Option o : options) {
+        label(question, Static.constraints(0,0,3,1));
+        for (int i = 0; i < options.length; i++) {
+            Option o = options[i];
             JButton b = new JButton(o.text());
             b.addActionListener(o.action());
-            add(b);
+            add(b, Static.constraints(i, 1, 1, 1));
         }
         revalidate();
     }
@@ -40,32 +41,16 @@ public class Window extends JFrame {
         content.removeAll();
     }
 
+    private void label(String text, GridBagConstraints constraints) {
+        JLabel label = new JLabel(text);
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        add(label, constraints);
+    }
+
     // Creates a new button with an action listener
-    private JButton newButton(String name, ActionListener action) {
-        JButton button = new JButton(name);
+    private void button(String text, ActionListener action, GridBagConstraints constraints) {
+        JButton button = new JButton(text);
         button.addActionListener(action);
-        add(button);
-        return button;
-    }
-
-    // Adds a field of text with information
-    private JTextField newTextField(String name) {
-        JTextField textField = new JTextField(name);
-        add(textField);
-        return textField;
-    }
-
-    private JTextArea newTextArea(String contents) {
-        JTextArea textArea = new JTextArea(contents);
-        textArea.setEditable(false);
-        add(textArea);
-        return textArea;
-    }
-
-    // Makes a dropdown box with options
-    private JComboBox<String> newDropdown(String[] items) {
-        JComboBox<String> dropdown = new JComboBox<>(items);
-        add(dropdown);
-        return dropdown;
+        add(button, constraints);
     }
 }

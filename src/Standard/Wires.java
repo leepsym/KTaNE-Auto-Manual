@@ -45,8 +45,6 @@ public class Wires {
         }
     }
 
-    // 297 sense
-
     private void four(int state) {
         switch (state) {
             case 0 ->

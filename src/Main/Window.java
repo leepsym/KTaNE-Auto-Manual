@@ -19,7 +19,8 @@ public class Window extends JFrame {
     public void returnToModules() {
         reset();
         // Modules
-        button("Basic Wires", j -> new Standard.Wires(),Static.constraints(0,0,0,0));
+        button("Basic Wires", j -> new Standard.Wires(),Static.constraints(0,0,1,1));
+        button("Simon Says", j -> new Standard.SimonSays(),Static.constraints(1,0,1,1));
 
         revalidate();
     }

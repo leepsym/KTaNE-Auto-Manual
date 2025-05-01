@@ -1,10 +1,17 @@
 package Main;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import java.awt.Container;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 
 public class Window extends JFrame {
+    private volatile String input;
     private final Container content = getContentPane();
     public Window() {
         setTitle("KTaNE Automatic Manual");
@@ -24,9 +31,9 @@ public class Window extends JFrame {
 
         revalidate();
     }
-    public void query(String question, Option[] options) {
+    public void buttonQuery(String question, Option[] options) {
         reset();
-        label(question, Static.constraints(0,0,3,1));
+        label(question, Static.constraints(0,0,options.length,1));
         for (int i = 0; i < options.length; i++) {
             Option o = options[i];
             JButton b = new JButton(o.text());
@@ -35,23 +42,39 @@ public class Window extends JFrame {
         }
         revalidate();
     }
-
+    public String textFieldQuery(String question) {
+        reset();
+        input = null;
+        label(question, Static.constraints(0,0,1,1));
+        JTextField textField = textField("",Static.constraints(0,1,1,1));
+        textField.addActionListener(l -> input = textField.getText());
+        revalidate();
+        while (input == null) Thread.onSpinWait();
+        return input;
+    }
 
     // Resets the pane to a blank slate
-    private void reset() {
+    public void reset() {
         content.removeAll();
     }
 
-    private void label(String text, GridBagConstraints constraints) {
+    public void label(String text, GridBagConstraints constraints) {
         JLabel label = new JLabel(text);
         label.setHorizontalAlignment(SwingConstants.CENTER);
         add(label, constraints);
     }
 
     // Creates a new button with an action listener
-    private void button(String text, ActionListener action, GridBagConstraints constraints) {
+    public void button(String text, ActionListener action, GridBagConstraints constraints) {
         JButton button = new JButton(text);
         button.addActionListener(action);
         add(button, constraints);
+    }
+
+    // Creates a new button with an action listener
+    public JTextField textField(String text, GridBagConstraints constraints) {
+        JTextField textField = new JTextField(text);
+        add(textField, constraints);
+        return textField;
     }
 }

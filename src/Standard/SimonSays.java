@@ -4,128 +4,52 @@ import Main.Option;
 import Main.Static;
 
 public class SimonSays {
+    private final Colour[] order;
+    private enum Colour {
+        RED,
+        BLUE,
+        GREEN,
+        YELLOW;
+        public String toString() {
+            return switch (this) {
+                case RED -> "Red";
+                case BLUE -> "Blue";
+                case GREEN -> "Green";
+                case YELLOW -> "Yellow";
+            };
+        }
+        private static Colour[] order() {
+            for (char c : Static.serial().toCharArray()) {
+                switch (c) {
+                    case 'A', 'E', 'I', 'O', 'U':
+                        return switch (Static.strikes()) { // Serial number contains a vowel
+                            case 0 -> new Colour[]{BLUE,   RED,    YELLOW, GREEN };
+                            case 1 -> new Colour[]{YELLOW, GREEN,  BLUE,   RED   };
+                            case 2 -> new Colour[]{GREEN,  RED,    YELLOW, BLUE  };
+                            default -> throw new IllegalStateException();
+                        };
+                }
+            }           return switch (Static.strikes()) { // Serial number does not contain a vowel
+                            case 0 -> new Colour[]{BLUE,   YELLOW, GREEN,  RED   };
+                            case 1 -> new Colour[]{RED,    BLUE,   YELLOW, GREEN };
+                            case 2 -> new Colour[]{YELLOW, GREEN,  BLUE,   RED   };
+                            default -> throw new IllegalStateException();
+                        };
+        }
+    }
     public SimonSays() {
-        Static.window.query("Does the serial number contain a vowel?", new Option[]{
-            new Option("Yes", l -> Static.window.query("How many strikes have been used?", new Option[]{
-                new Option("0", ll -> rotate(0)),
-                new Option("1", ll -> rotate(1)),
-                new Option("2", ll -> rotate(2)),
-            })),
-            new Option("No", l -> Static.window.query("How many strikes have been used?", new Option[]{
-                new Option("0", ll -> jumble(0)),
-                new Option("1", ll -> jumble(1)),
-                new Option("2", ll -> jumble(2)),
-            }))
+        order = Colour.order();
+        menu("What buttons are flashing?");
+    }
+    private void menu(String text) {
+        Static.window.buttonQuery(text, new Option[]{
+                option(Colour.RED),
+                option(Colour.BLUE),
+                option(Colour.GREEN),
+                option(Colour.YELLOW)
         });
     }
-
-    public void rotate(int strikes) {
-        switch (strikes) {
-            case 0 ->
-                Static.window.query("What colour is flashing? (In Order)", new Option[]{
-                    new Option("Red", l -> Static.window.query("Blue", new Option[]{
-                        new Option("Return", ll -> rotate(strikes))
-                    })),
-                    new Option("Blue", l -> Static.window.query("Red", new Option[]{
-                        new Option("Return", ll -> rotate(strikes))
-                    })),
-                    new Option("Green", l -> Static.window.query("Yellow", new Option[]{
-                        new Option("Return", ll -> rotate(strikes))
-                    })),
-                    new Option("Yellow", l -> Static.window.query("Green", new Option[]{
-                        new Option("Return", ll -> rotate(strikes))
-                    })),
-                    new Option("Return", l -> Static.window.returnToModules())
-                });
-            case 1 ->
-                Static.window.query("What colour is flashing? (In Order)", new Option[]{
-                    new Option("Red", l -> Static.window.query("Yellow", new Option[]{
-                        new Option("Return", ll -> rotate(strikes))
-                    })),
-                    new Option("Blue", l -> Static.window.query("Green", new Option[]{
-                        new Option("Return", ll -> rotate(strikes))
-                    })),
-                    new Option("Green", l -> Static.window.query("Blue", new Option[]{
-                        new Option("Return", ll -> rotate(strikes))
-                    })),
-                    new Option("Yellow", l -> Static.window.query("Red", new Option[]{
-                        new Option("Return", ll -> rotate(strikes))
-                    })),
-                    new Option("Return", l -> Static.window.returnToModules())
-                });
-            case 2 ->
-                Static.window.query("What colour is flashing? (In Order)", new Option[]{
-                    new Option("Red", l -> Static.window.query("Green", new Option[]{
-                        new Option("Return", ll -> rotate(strikes))
-                    })),
-                    new Option("Blue", l -> Static.window.query("Red", new Option[]{
-                        new Option("Return", ll -> rotate(strikes))
-                    })),
-                    new Option("Green", l -> Static.window.query("Yellow", new Option[]{
-                        new Option("Return", ll -> rotate(strikes))
-                    })),
-                    new Option("Yellow", l -> Static.window.query("Blue", new Option[]{
-                        new Option("Return", ll -> rotate(strikes))
-                    })),
-                    new Option("Return", l -> Static.window.returnToModules())
-                });
-            default ->
-                System.out.println("Incorrect input case Standard/SimonSays.rotate");
-        }
-    }
-
-    public void jumble(int strikes) {
-        switch (strikes) {
-            case 0 ->
-                Static.window.query("What colour is flashing? (In Order)", new Option[]{
-                    new Option("Red", l -> Static.window.query("Blue", new Option[]{
-                        new Option("Return", ll -> jumble(strikes))
-                    })),
-                    new Option("Blue", l -> Static.window.query("Yellow", new Option[]{
-                        new Option("Return", ll -> jumble(strikes))
-                    })),
-                    new Option("Green", l -> Static.window.query("Green", new Option[]{
-                        new Option("Return", ll -> jumble(strikes))
-                    })),
-                    new Option("Yellow", l -> Static.window.query("Red", new Option[]{
-                        new Option("Return", ll -> jumble(strikes))
-                        })),
-                    new Option("Return", l -> Static.window.returnToModules())
-                });
-            case 1 ->
-                Static.window.query("What colour is flashing? (In Order)", new Option[]{
-                    new Option("Red", l -> Static.window.query("Red", new Option[]{
-                        new Option("Return", ll -> jumble(strikes))
-                    })),
-                    new Option("Blue", l -> Static.window.query("Blue", new Option[]{
-                        new Option("Return", ll -> jumble(strikes))
-                    })),
-                    new Option("Green", l -> Static.window.query("Yellow", new Option[]{
-                        new Option("Return", ll -> jumble(strikes))
-                    })),
-                    new Option("Yellow", l -> Static.window.query("Green", new Option[]{
-                        new Option("Return", ll -> jumble(strikes))
-                    })),
-                    new Option("Return", l -> Static.window.returnToModules())
-                });
-            case 2 ->
-                Static.window.query("What colour is flashing? (In Order)", new Option[]{
-                    new Option("Red", l -> Static.window.query("Yellow", new Option[]{
-                        new Option("Return", ll -> jumble(strikes))
-                    })),
-                    new Option("Blue", l -> Static.window.query("Green", new Option[]{
-                        new Option("Return", ll -> jumble(strikes))
-                    })),
-                    new Option("Green", l -> Static.window.query("Blue", new Option[]{
-                        new Option("Return", ll -> jumble(strikes))
-                    })),
-                    new Option("Yellow", l -> Static.window.query("Red", new Option[]{
-                        new Option("Return", ll -> jumble(strikes))
-                    })),
-                    new Option("Return", l -> Static.window.returnToModules())
-                });
-            default ->
-                System.out.println("Incorrect input case Standard/SimonSays.jumble");
-        }
+    private Option option(Colour colour) {
+        return new Option(colour.toString(), l -> menu(order[colour.ordinal()].toString()));
     }
 }

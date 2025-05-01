@@ -49,8 +49,14 @@ public class Window extends JFrame {
         JTextField textField = textField("",Static.constraints(0,1,1,1));
         textField.addActionListener(l -> input = textField.getText());
         revalidate();
-        while (input == null) Thread.onSpinWait();
-        return input;
+        System.out.println("a");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                return input;
+            }
+        });
+
     }
 
     // Resets the pane to a blank slate

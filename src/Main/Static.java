@@ -4,14 +4,12 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
 public class Static {
-    private static int strikes;
+    public static String input;
+    private static int strikes = 0;
     private static String serial;
+    public static Window window = new Window();
 
-    public static Window window;
-    public static void main(String[] args) {
-        strikes = 3;
-        window = new Window();
-    }
+    public static void main(String[] args) {}
     public static GridBagConstraints constraints(int x, int y, int w, int h) {
         return new GridBagConstraints(
                 x,y,w,h,
@@ -21,7 +19,14 @@ public class Static {
         return strikes;
     }
     public static String serial() {
-        if (serial == null) serial = window.textFieldQuery("What is the serial number?").toUpperCase();
+        if (serial == null) {
+            if (input != null) {
+                serial = input;
+                input = null;
+            } else {
+                window.textFieldQuery("What is the serial number?");
+            }
+        }
         return serial;
     }
 }

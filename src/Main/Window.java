@@ -3,6 +3,8 @@ package Main;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import java.awt.Container;
@@ -11,11 +13,13 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 
 public class Window extends JFrame {
-    private volatile String input;
+    private final JMenuBar bar = new JMenuBar();
     private final Container content = getContentPane();
     public Window() {
         setTitle("KTaNE Automatic Manual");
         setSize(1280, 720);
+        setJMenuBar(bar);
+        menuItem("Modules", l -> returnToModules());
 
         setLayout(new GridBagLayout());
         setVisible(true);
@@ -42,26 +46,27 @@ public class Window extends JFrame {
         }
         revalidate();
     }
-    public String textFieldQuery(String question) {
+    public void textFieldQuery(String question) {
         reset();
-        input = null;
+        Static.input = null;
         label(question, Static.constraints(0,0,1,1));
         JTextField textField = textField("",Static.constraints(0,1,1,1));
-        textField.addActionListener(l -> input = textField.getText());
-        revalidate();
-        System.out.println("a");
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                return input;
-            }
+        textField.addActionListener(l -> {
+            Static.input = textField.getText();
+            returnToModules();
         });
-
+        revalidate();
     }
 
     // Resets the pane to a blank slate
     public void reset() {
         content.removeAll();
+    }
+
+    private void menuItem(String text, ActionListener action) {
+        JMenuItem item = new JMenuItem(text);
+        item.addActionListener(action);
+        bar.add(item);
     }
 
     public void label(String text, GridBagConstraints constraints) {

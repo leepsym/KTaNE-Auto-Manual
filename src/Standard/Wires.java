@@ -49,12 +49,15 @@ public class Wires {
         switch (state) {
             case 0 ->
                 Static.window.buttonQuery("Is there more than one red wire?", new Option[]{
-                    new Option("Yes", l -> Static.window.buttonQuery("Is the last digit of the serial number odd?", new Option[]{
-                        new Option("Yes", ll -> Static.window.buttonQuery("Cut the last red wire.", new Option[]{
-                            new Option("Return", lll -> Static.window.returnToModules())
-                        })),
-                        new Option("No", ll -> four(1)),
-                    })),
+                    new Option("Yes", l -> {
+                        if (Static.serial().toCharArray()[5] % 2 == 1) {
+                            Static.window.buttonQuery("Cut the last red wire.", new Option[]{
+                                    new Option("Return", lll -> Static.window.returnToModules())
+                            });
+                        } else {
+                            four(1);
+                        }
+                    }),
                     new Option("No", l -> four(1))
                 });
             case 1 ->
@@ -93,10 +96,16 @@ public class Wires {
             case 0 ->
                 Static.window.buttonQuery("Is the last wire black?", new Option[]{
                     new Option("Yes", l -> Static.window.buttonQuery("Is the last digit of the serial number odd?", new Option[]{
-                        new Option("Yes", ll -> Static.window.buttonQuery("Cut the fourth wire.", new Option[]{
-                            new Option("Return", lll -> Static.window.returnToModules())
-                        })),
-                        new Option("No", ll -> five(1))
+                        new Option("Yes", ll -> {
+                            if (Static.serial().toCharArray()[5] % 2 == 1) {
+                                Static.window.buttonQuery("Cut the last red wire.", new Option[]{
+                                        new Option("Return", lll -> Static.window.returnToModules())
+                                });
+                            } else {
+                                four(1);
+                            }
+                        }),
+                        new Option("No", ll -> four(1))
                     })),
                     new Option("No", l -> five(1))
                 });
@@ -138,10 +147,16 @@ public class Wires {
                         new Option("No", ll -> six(1))
                     })),
                     new Option("No", l -> Static.window.buttonQuery("Is the last digit of the serial number odd?.", new Option[]{
-                        new Option("Yes", ll -> Static.window.buttonQuery("Cut the fourth wire.", new Option[]{
-                            new Option("Return", lll -> Static.window.returnToModules())
-                        })),
-                        new Option("No", ll -> six(1))
+                        new Option("Yes", ll -> {
+                            if (Static.serial().toCharArray()[5] % 2 == 1) {
+                                Static.window.buttonQuery("Cut the last red wire.", new Option[]{
+                                        new Option("Return", lll -> Static.window.returnToModules())
+                                });
+                            } else {
+                                four(1);
+                            }
+                        }),
+                        new Option("No", ll -> four(1))
                     }))
                 });
             case 1 ->

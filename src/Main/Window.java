@@ -1,12 +1,6 @@
 package Main;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -46,15 +40,32 @@ public class Window extends JFrame {
         }
         revalidate();
     }
-    public void textFieldQuery(String question) {
+    public void textFieldQuery(String question, ActionListener action) {
         reset();
-        Static.input = null;
         label(question, Static.constraints(0,0,1,1));
         JTextField textField = textField("",Static.constraints(0,1,1,1));
-        textField.addActionListener(l -> {
-            Static.input = textField.getText();
-            returnToModules();
+        textField.addActionListener(l -> Static.input(new String[]{textField.getText()}));
+        textField.addActionListener(action);
+        revalidate();
+    }
+    public void comboBoxQuery(String question, String[][] text, Option option) {
+        reset();
+        label(question, Static.constraints(0,0,text.length,1));
+        JComboBox<String>[] comboBox = new JComboBox[text.length];
+        for (int i = 0; i < text.length; i++) {
+            comboBox[i] = new JComboBox<>(text[i]);
+            add(comboBox[i], Static.constraints(i, 1, 1, 1));
+        }
+        JButton b = new JButton(option.text());
+        b.addActionListener(l -> {
+            String[] input = new String[text.length];
+            for (int i = 0; i < text.length; i++) {
+                input[i] = (String) comboBox[i].getSelectedItem();
+            }
+            Static.input(input);
         });
+        b.addActionListener(option.action());
+        add(b, Static.constraints(0, 2, text.length, 1));
         revalidate();
     }
 

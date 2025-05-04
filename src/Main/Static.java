@@ -4,7 +4,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
 public class Static {
-    public static String input;
+    private static String[] input;
     private static int strikes = 0;
     private static String serial;
     public static Window window = new Window();
@@ -21,12 +21,20 @@ public class Static {
     public static String serial() {
         if (serial == null) {
             if (input != null) {
-                serial = input;
+                serial = input[0];
                 input = null;
             } else {
-                window.textFieldQuery("What is the serial number?");
+                window.textFieldQuery("What is the serial number?", l -> {});
             }
         }
         return serial;
+    }
+    public static void input(String[] value) {
+        input = value;
+    }
+    public static String[] input() {
+        String[] value = input;
+        input = null;
+        return value;
     }
 }

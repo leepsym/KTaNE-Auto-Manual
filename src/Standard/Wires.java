@@ -47,108 +47,107 @@ public class Wires {
 
     private void four(int state) {
         switch (state) {
-            case 0 ->
-                Static.window.buttonQuery("Is there more than one red wire?", new Option[]{
-                    new Option("Yes", l -> {
-                        if (Static.serial().toCharArray()[5] % 2 == 1) {
-                            Static.window.buttonQuery("Cut the last red wire.", new Option[]{
-                                    new Option("Return", lll -> Static.window.returnToModules())
-                            });
-                        } else {
-                            four(1);
-                        }
-                    }),
-                    new Option("No", l -> four(1))
-                });
-            case 1 ->
+            case 0:
+                if (odd()) {
+                    Static.window.buttonQuery("Is there more than one red wire?", new Option[]{
+                        new Option("Yes", l -> Static.window.buttonQuery("Cut the last red wire.", new Option[]{
+                                new Option("Return", m -> Static.window.returnToModules())
+                        })),
+                        new Option("No", l -> four(1))
+                    });
+                } else four(1);
+
+            case 1:
                 Static.window.buttonQuery("Is the last wire yellow?", new Option[]{
                     new Option("Yes", l -> Static.window.buttonQuery("Are there any red wires?", new Option[]{
-                        new Option("Yes", ll -> four(2)),
-                        new Option("No", ll -> Static.window.buttonQuery("Cut the first wire.", new Option[]{
-                            new Option("Return", lll -> Static.window.returnToModules())
+                        new Option("Yes", m -> four(2)),
+                        new Option("No", m -> Static.window.buttonQuery("Cut the first wire.", new Option[]{
+                            new Option("Return", n -> Static.window.returnToModules())
                         }))
                     })),
                     new Option("No", l -> four(2))
                 });
-            case 2 ->
+
+            case 2:
                 Static.window.buttonQuery("Is there exactly one blue wire?", new Option[]{
                     new Option("Yes", l -> Static.window.buttonQuery("Cut the first wire.", new Option[]{
-                        new Option("Return", ll -> Static.window.returnToModules())
+                        new Option("Return", m -> Static.window.returnToModules())
                     })),
                     new Option("No", l -> four(3))
                 });
-            case 3 ->
+            case 3:
                 Static.window.buttonQuery("Is there more than one yellow wire?", new Option[]{
                     new Option("Yes", l -> Static.window.buttonQuery("Cut the last wire.", new Option[]{
-                        new Option("Return", ll -> Static.window.returnToModules())
+                        new Option("Return", m -> Static.window.returnToModules())
                     })),
                     new Option("No", l -> Static.window.buttonQuery("Cut the second wire.", new Option[]{
-                            new Option("Return", ll -> Static.window.returnToModules())
+                            new Option("Return", m -> Static.window.returnToModules())
                     }))
                 });
-            default ->
-                    System.out.println("Incorrect input case Standard/Wires.four");
+            default:
+                System.out.println("Incorrect input case Standard/Wires.four");
         }
     }
 
     private void five(int state) {
         switch (state) {
-            case 0 ->
-                Static.window.buttonQuery("Is the last wire black?", new Option[]{
-                    new Option("Yes", l -> Static.window.buttonQuery("Is the last digit of the serial number odd?", new Option[]{
-                        new Option("Yes", ll -> {
-                            if (Static.serial().toCharArray()[5] % 2 == 1) {
-                                Static.window.buttonQuery("Cut the last red wire.", new Option[]{
+            case 0:
+                if (odd()) {
+                        Static.window.buttonQuery("Is the last wire black?", new Option[]{
+                                new Option("Yes", l -> Static.window.buttonQuery("Cut the last red wire.", new Option[]{
                                         new Option("Return", lll -> Static.window.returnToModules())
-                                });
-                            } else {
-                                four(1);
-                            }
-                        }),
-                        new Option("No", ll -> four(1))
-                    })),
-                    new Option("No", l -> five(1))
-                });
-            case 1 ->
+                                })),
+                                new Option("No", l -> five(1))
+                        });
+                } else {
+                    five(1);
+                }
+            case 1:
+                Option no = new Option("No", l -> five(2));
                 Static.window.buttonQuery("Is there exactly one red wire?", new Option[]{
                     new Option("Yes", l -> Static.window.buttonQuery("Is there more than one yellow wire?", new Option[]{
-                        new Option("Yes", ll -> Static.window.buttonQuery("Cut the first wire.", new Option[]{
-                            new Option("Return", lll -> Static.window.returnToModules())
+                        new Option("Yes", m -> Static.window.buttonQuery("Cut the first wire.", new Option[]{
+                            new Option("Return", n -> Static.window.returnToModules())
                         })),
-                        new Option("No", ll -> five(2))
+                        no
                     })),
-                    new Option("No", l -> five(2))
+                    no
                 });
-            case 2 ->
+            case 2:
                 Static.window.buttonQuery("Are there any black wires?", new Option[]{
                     new Option("Yes", l -> Static.window.buttonQuery("Cut the second wire.", new Option[]{
-                        new Option("Return", ll -> Static.window.returnToModules())
+                        new Option("Return", m -> Static.window.returnToModules())
                     })),
                     new Option("No", l -> Static.window.buttonQuery("Cut the first wire.", new Option[]{
-                        new Option("Return", ll -> Static.window.returnToModules())
+                        new Option("Return", m -> Static.window.returnToModules())
                     }))
                 });
-            default ->
-                    System.out.println("Incorrect input case Standard/Wires.five");
+            default:
+                System.out.println("Incorrect input case Standard/Wires.five");
         }
     }
 
     private void six(int state) {
         switch (state) {
-            case 0 ->
+            case 0:
+                if (odd()) {
+
+                } else {
+                    six(1);
+                }
                 Static.window.buttonQuery("Are there any yellow wires?", new Option[]{
                     new Option("Yes", l -> Static.window.buttonQuery("Is there exactly one yellow wire?", new Option[]{
-                        new Option("Yes", ll -> Static.window.buttonQuery("Is there more than one white wire?", new Option[]{
-                            new Option("Yes", lll -> Static.window.buttonQuery("Cut the fourth wire.", new Option[]{
-                                new Option("Return", llll -> Static.window.returnToModules())
+                        new Option("Yes", m -> Static.window.buttonQuery("Is there more than one white wire?", new Option[]{
+                            new Option("Yes", n -> Static.window.buttonQuery("Cut the fourth wire.", new Option[]{
+                                new Option("Return", o -> Static.window.returnToModules())
                             })),
                             new Option("No", lll -> six(1))
                         })),
                         new Option("No", ll -> six(1))
                     })),
                     new Option("No", l -> Static.window.buttonQuery("Is the last digit of the serial number odd?.", new Option[]{
-                        new Option("Yes", ll -> {
-                            if (Static.serial().toCharArray()[5] % 2 == 1) {
+                        new Option("Yes", m -> {
+                            if (Static.serial(n -> six(state)).toCharArray()[5] % 2 == 1) {
                                 Static.window.buttonQuery("Cut the last red wire.", new Option[]{
                                         new Option("Return", lll -> Static.window.returnToModules())
                                 });
@@ -159,17 +158,20 @@ public class Wires {
                         new Option("No", ll -> four(1))
                     }))
                 });
-            case 1 ->
+            case 1:
                 Static.window.buttonQuery("Are there any red wires?", new Option[]{
                     new Option("Yes", l -> Static.window.buttonQuery("Cut the fourth wire.", new Option[]{
-                        new Option("Return", ll -> Static.window.returnToModules())
+                        new Option("Return", m -> Static.window.returnToModules())
                     })),
                     new Option("No", l -> Static.window.buttonQuery("Cut the last wire.", new Option[]{
-                        new Option("Return", ll -> Static.window.returnToModules())
+                        new Option("Return", m -> Static.window.returnToModules())
                     }))
                 });
-            default ->
-                    System.out.println("Incorrect input case Standard/Wires.six");
+            default:
+                System.out.println("Incorrect input case Standard/Wires.six");
         }
+    }
+    private boolean odd() {
+        return (Static.serial(l -> six(0)).toCharArray()[5] % 2 == 1);
     }
 }

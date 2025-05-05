@@ -3,8 +3,10 @@ package Standard;
 import Main.Option;
 import Main.Static;
 
+import java.awt.event.ActionListener;
+
 public class SimonSays {
-    private final Colour[] order;
+    private Colour[] order;
     private enum Colour {
         RED,
         BLUE,
@@ -18,8 +20,8 @@ public class SimonSays {
                 case YELLOW -> "Yellow";
             };
         }
-        private static Colour[] order() {
-            for (char c : Static.serial().toCharArray()) {
+        private static Colour[] order(ActionListener action) {
+            for (char c : Static.serial(action).toCharArray()) {
                 switch (c) {
                     case 'A', 'E', 'I', 'O', 'U':
                         return switch (Static.strikes()) { // Serial number contains a vowel
@@ -38,7 +40,10 @@ public class SimonSays {
         }
     }
     public SimonSays() {
-        order = Colour.order();
+        setup();
+    }
+    private void setup() {
+        order = Colour.order(l -> setup());
         menu("What buttons are flashing?");
     }
     private void menu(String text) {

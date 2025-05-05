@@ -2,6 +2,7 @@ package Main;
 
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
 
 public class Static {
     private static String[] input;
@@ -18,13 +19,13 @@ public class Static {
     public static int strikes() {
         return strikes;
     }
-    public static String serial() {
+    public static String serial(ActionListener action) {
         if (serial == null) {
+            String[] value = input();
             if (input != null) {
-                serial = input[0];
-                input = null;
+                serial = value[0];
             } else {
-                window.textFieldQuery("What is the serial number?", l -> {});
+                window.textFieldQuery("What is the serial number?", action);
             }
         }
         return serial;

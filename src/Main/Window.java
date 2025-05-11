@@ -1,6 +1,13 @@
 package Main;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -12,6 +19,7 @@ public class Window extends JFrame {
     public Window() {
         setTitle("KTaNE Automatic Manual");
         setSize(1280, 720);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setJMenuBar(bar);
         menuItem("Modules", l -> returnToModules());
 
@@ -45,8 +53,10 @@ public class Window extends JFrame {
         reset();
         label(question, Static.constraints(0,0,1,1));
         JTextField textField = textField("",Static.constraints(0,1,1,1));
-        textField.addActionListener(l -> Static.input(new String[]{textField.getText()}));
-        textField.addActionListener(action);
+        textField.addActionListener(l -> {
+            Static.input(new String[]{textField.getText()});
+            run(action);
+        });
         revalidate();
     }
     public void comboBoxQuery(String question, String[][] text, Option option) {
@@ -64,8 +74,8 @@ public class Window extends JFrame {
                 input[i] = (String) comboBox[i].getSelectedItem();
             }
             Static.input(input);
+            run(option.action());
         });
-        b.addActionListener(option.action());
         add(b, Static.constraints(0, 2, text.length, 1));
         revalidate();
     }
@@ -92,6 +102,12 @@ public class Window extends JFrame {
         JButton button = new JButton(text);
         button.addActionListener(action);
         add(button, constraints);
+    }
+
+    public void run(ActionListener action) {
+        JButton dummy = new JButton() {};
+        dummy.addActionListener(action);
+        dummy.doClick();
     }
 
     // Creates a new button with an action listener

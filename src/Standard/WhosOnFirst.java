@@ -137,10 +137,7 @@ public class WhosOnFirst {
                 Static.window.buttonQuery("Invalid word.", new Option[] {
                         new Option("Return", l -> Static.window.returnToModules())
                 });
-
-
-            Static.window.comboBoxQuery("On the bomb, click the first word that appears in the dropdown below, from top to bottom.", words, new Option("Return", l -> Static.window.returnToModules()));
-
         }
+        Static.window.comboBoxQuery("On the bomb, click the first word that appears in the dropdown below, from top to bottom.", words, new Option("Return", l -> Static.window.returnToModules()));
     }
 }

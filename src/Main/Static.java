@@ -22,7 +22,7 @@ public class Static {
     public static String serial(ActionListener action) {
         if (serial == null) {
             String[] value = input();
-            if (input != null) {
+            if (value != null) {
                 serial = value[0];
             } else {
                 window.textFieldQuery("What is the serial number?", action);

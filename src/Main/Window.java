@@ -36,6 +36,7 @@ public class Window extends JFrame {
         button("Simon Says", j -> new Standard.SimonSays(), Static.constraints(1,0,1,1));
         button("Who's on First?", j -> new Standard.WhosOnFirst(), Static.constraints(2,0,1,1));
         button("Memory", j -> new Standard.Memory(), Static.constraints(3,0,1,1));
+        button("Complicated Wires", j -> new Standard.ComplicatedWires(), Static.constraints(0, 1, 1, 1));
 
         revalidate();
     }

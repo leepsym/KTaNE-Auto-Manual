@@ -5,6 +5,7 @@ import Main.Option;
 
 public class ComplicatedWires {
     String[][] compCont = new String[4][4];
+    String[][] possible = new String[4][4];
     String[] options = new String[]{
             "",
             "The wire has red colour",
@@ -12,35 +13,40 @@ public class ComplicatedWires {
             "A star is present",
             "The LED is activated"
     };
-    String[][] chart = new String[][]{
+    final String[][] chart = new String[][]{
         new String[]{"C", "C", "S", "C"},
         new String[]{"D", "P", "S", "S"},
         new String[]{"P", "D", "S", "P"},
         new String[]{"B", "B", "B", "D"}
     };
 
-    String[][] red = new String[][]{
+    final String[][] red = new String[][]{
         new String[]{null, "C", "S", null},
         new String[]{null, "P", "S", null},
         new String[]{null, "D", "S", null},
         new String[]{null, "B", "B", null}
     };
 
-    String[][] blue = new String[][]{
+    final String[][] blue = new String[][]{
         new String[]{null, null, null, null},
         new String[]{"D", "P", "S", "S"},
         new String[]{"P", "D", "S", "P"},
         new String[]{null, null, null, null}
     };
 
-    String[][] star = new String[][]{
+    final String[][] star = new String[][]{
         new String[]{"C", "C", null, null},
         new String[]{"D", "P", null, null},
         new String[]{"P", "D", null, null},
         new String[]{"B", "B", null, null}
     };
 
-    // LED
+    final String[][] led = new String[][]{
+        new String[]{null, null, null, null},
+        new String[]{null, null, null, null},
+        new String[]{"P", "D", "S", "P"},
+        new String[]{"B", "B", "B", "D"}
+    };
 
     public ComplicatedWires() {
         for (int i = 0; i < 4; i++) {
@@ -66,16 +72,82 @@ public class ComplicatedWires {
             opts[i] = arraySearch(options, options[i]);
         }
 
-
-
-        for (int i = 0; i < opts.length; i++) {
-            switch (opts[i]) {
+        boolean[] items = new boolean[4];
+        for (int opt : opts) {
+            switch (opt - 1) {
                 case 0:
+                    items[0] = true;
+                    venn(red, true);
                 case 1:
-
+                    items[1] = true;
+                    venn(blue, true);
                 case 2:
+                    items[2] = true;
+                    venn(star, true);
                 case 3:
-                case 4:
+                    items[3] = true;
+                    venn(led, true);
+            }
+
+            switch (opt - 1) {
+                case 0:
+                    if (!items[0]) {
+                        venn(red, false);
+                    }
+                case 1:
+                    if (!items[1]) {
+                        venn(blue, false);
+                    }
+                case 2:
+                    if (!items[2]) {
+                        venn(star, false);
+                    }
+                case 3:
+                    if (!items[3]) {
+                        venn(led, false);
+                    }
+            }
+        }
+
+
+
+        boolean isNull = true;
+        for (int i = 0; i < possible.length; i++) {
+            for (int j = 0; j < possible[i].length; j++) {
+                if (possible[i][j] != null) {
+                    isNull = false;
+                } else {
+                    switch (possible[i][j]) {
+                        case "C":
+                            Static.window.buttonQuery("Cut the wire.", new Option[]{
+                                new Option("Return", l -> Static.window.returnToModules())
+                            });
+                        case "D":
+                            Static.window.buttonQuery("Do NOT cut the wire.", new Option[]{
+                                    new Option("Return", l -> Static.window.returnToModules())
+                            });
+                        case "S": // When E fixes storage check if last digit of serial is even
+                            Static.window.buttonQuery("Cut the wire.", new Option[]{
+                                    new Option("Return", l -> Static.window.returnToModules())
+                            });
+                        case "P": // When E fixes storage check if parallel port exists
+                            Static.window.buttonQuery("Cut the wire.", new Option[]{
+                                    new Option("Return", l -> Static.window.returnToModules())
+                            });
+                        case "B": // When E fixes storage check if 2 or more batteries
+                            Static.window.buttonQuery("Cut the wire.", new Option[]{
+                                    new Option("Return", l -> Static.window.returnToModules())
+                            });
+                    }
+                }
+            }
+        }
+    }
+
+    private void venn(String[][] list, boolean item) {
+        for (int i = 0; i < list.length; i++) {
+            for (int j = 0; j < list[i].length; j++) {
+                if (!item && list[i][j] == null) possible[i][j] = null; else if (item && possible[i][j] != null) possible[i][j] = list[i][j];
             }
         }
     }
